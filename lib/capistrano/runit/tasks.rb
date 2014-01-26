@@ -27,7 +27,7 @@ Capistrano::Configuration.instance.load do
       run "#{sudo} mkdir -p #{runit_dir}/supervise"
 
       if force_runit || !remote_file_exists?("#{runit_dir}/run")
-        put_sudo runit_run_contents, "#{runit_dir}/run"
+        put_sudo runit_script_contents, "#{runit_dir}/run"
         run "#{sudo} chmod 755 #{runit_dir}/run"
       end
 
