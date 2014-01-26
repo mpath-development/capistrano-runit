@@ -1,9 +1,22 @@
 require 'capistrano'
 
 Capistrano::Configuration.instance.load do
-  _cset(:runit_script_contents) { abort "Please specify the contents of your runit script, set :runit_script_contents" }
+  def set_default(name, *args, &block)
+    set(name, *args, &block) unless exists?(name)
+  end
+
+  set_default(:runit_script_contents) { abort "Please specify the contents of your runit script, set :runit_script_contents" }
+  set_default(:force_runit)           { true }
+  set_default(:runit_dir)             { "/etc/sv/#{application}" }
 
   namespace :runit do
+    def put_sudo(data, to)
+      filename = File.basename(to)
+      to_directory = File.dirname(to)
+      put data, "/tmp/#{filename}"
+      run "#{sudo} mv -f /tmp/#{filename} #{to_directory}"
+    end
+
     desc "Starts runit on each host"
     task :start do
       run "#{sudo} start runsvdir"
