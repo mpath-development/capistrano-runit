@@ -52,7 +52,7 @@ module Capistrano
               run "#{sudo} mkdir -p /service"
 
               if force_runit || !remote_file_exists?("/service/#{application}")
-                run "#{sudo} ln -f -s #{runit_dir} /service/#{application}"
+                run "#{sudo} ln -f -s #{runit_app_dir} /service/#{application}"
               end
             end
 
