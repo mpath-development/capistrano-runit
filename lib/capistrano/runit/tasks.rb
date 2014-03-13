@@ -45,7 +45,7 @@ module Capistrano
               run "#{sudo} mkdir -p #{runit_app_dir}/supervise"
 
               if force_runit || !remote_file_exists?("#{runit_app_dir}/run")
-                put_sudo runit_script_contents, "#{runit_dir}/run"
+                put_sudo runit_script_contents, "#{runit_app_dir}/run"
                 run "#{sudo} chmod 755 #{runit_app_dir}/run"
               end
 
